@@ -80,7 +80,7 @@ d3.csv("assets/data/data.csv").then(function(journalismData) {
       })
       .attr("font-family", "sans-serif")
       .attr("font-size", "8px")
-      .attr("fill", "white");;
+      .attr("fill", "white");
 
     // Create axes labels
 

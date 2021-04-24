@@ -18,13 +18,13 @@ var chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 // Import data from an external CSV file
-d3.csv("assets/data/data.csv").then(function(journalismData) {
-  //console.log(journalismData);
-  //console.log([journalismData]);
+d3.csv("assets/data/data.csv").then(function(healthData) {
+  //console.log(healthData);
+  //console.log([healthData]);
 
   // Step 1: parse data/cast as numbers
 
-  journalismData.forEach(function(data){
+  healthData.forEach(function(data){
     data.healthcare = +data.healthcare;
     data.poverty = +data.poverty;
   });
@@ -32,11 +32,11 @@ d3.csv("assets/data/data.csv").then(function(journalismData) {
   // Step 2: Create scale function
 
   var xLinearScale = d3.scaleLinear()
-    .domain([8,d3.max(journalismData, d=> d.poverty)])
+    .domain([8,d3.max(healthData, d=> d.poverty)])
     .range([0, width]);
 
   var yLinearScale = d3.scaleLinear()
-    .domain([4,d3.max(journalismData,d => d.healthcare)])
+    .domain([4,d3.max(healthData,d => d.healthcare)])
     .range([height,0]);
 
   //Step 3: Create axis functions
@@ -56,7 +56,7 @@ d3.csv("assets/data/data.csv").then(function(journalismData) {
   //Step 5: Create Circles
 
   var circlesGroup = chartGroup.selectAll("circle")
-    .data(journalismData)
+    .data(healthData)
     .enter()
     .append("circle")
     .attr("cx",d => xLinearScale(d.poverty))
@@ -70,7 +70,7 @@ d3.csv("assets/data/data.csv").then(function(journalismData) {
       .style("text-ancher","middle")
       //.style("font-size","8px")
       .selectAll("tspan")
-      .data(journalismData)
+      .data(healthData)
       .enter()
       .append("tspan")
       .attr("x", d => xLinearScale(d.poverty - 0.1))
@@ -98,25 +98,6 @@ d3.csv("assets/data/data.csv").then(function(journalismData) {
       .attr("font-family", "Times New Roman")
       .text("In Poverty (%)");
   }).catch(function(error) {
-    console.log(error);    
-  
-
-// Appending a label to each data point
-chart.append("text")
-.style("text-anchor", "middle")
-.style("font-size", "12px")
-.selectAll("tspan")
-.data(healthData)
-.enter()
-.append("tspan")
-    .attr("x", function(data) {
-        return xLinearScale(data.poverty - 0);
-    })
-    .attr("y", function(data) {
-        return yLinearScale(data.phys_act - 0.2);
-    })
-    .text(function(data) {
-        return data.abbr
-    });
+    console.log(error);     
 
 })
